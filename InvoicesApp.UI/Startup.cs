@@ -1,3 +1,7 @@
+using InvoiceApp.Business;
+using InvoiceApp.Domain;
+using InvoiceApp.Persistence;
+
 namespace InvoiceApp.UI;
 
 public class Startup
@@ -11,6 +15,15 @@ public class Startup
     public void AddServices(IServiceCollection services)
     {
         services.AddControllersWithViews();
+        
+        services.AddScoped<IUnitOfWork>(provider => new UnitOfWork(_configuration.GetConnectionString("InvoiceDataBase") ?? string.Empty));
+        
+        services.AddScoped<IClientRepository, ClientRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+
+        services.AddTransient<IInvoiceService, InvoiceService>();
     }
 
     public void StartApp(WebApplication app)
