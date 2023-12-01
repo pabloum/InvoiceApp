@@ -1,5 +1,7 @@
+using InvoiceApp.Domain;
+
 namespace InvoiceApp.Persistence;
 
-public interface IClientRepository 
+public interface IClientRepository : IRepository<Client>
 {
 }

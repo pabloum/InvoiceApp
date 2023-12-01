@@ -1,5 +1,7 @@
+using InvoiceApp.Domain;
+
 namespace InvoiceApp.Persistence;
 
-public interface IOrderRepository 
+public interface IOrderRepository : IRepository<Order>
 {
 }

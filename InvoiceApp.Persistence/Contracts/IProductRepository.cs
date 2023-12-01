@@ -1,5 +1,7 @@
+using InvoiceApp.Domain;
+
 namespace InvoiceApp.Persistence;
 
-public interface IProductRepository
+public interface IProductRepository: IRepository<Product>
 {
 }

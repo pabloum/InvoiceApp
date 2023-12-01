@@ -2,9 +2,9 @@ using InvoiceApp.Domain;
 
 namespace InvoiceApp.Persistence;
 
-public class Orderepository : BaseRepository<Product>, IOrderRepository 
+public class OrderRepository : BaseRepository<Order>, IOrderRepository 
 {
-    public Orderepository(UnitOfWork unitOfWork) : base(unitOfWork)
+    public OrderRepository(UnitOfWork unitOfWork) : base(unitOfWork)
     {
     }
 }

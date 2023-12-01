@@ -2,7 +2,7 @@ using InvoiceApp.Domain;
 
 namespace InvoiceApp.Persistence;
 
-public class InvoiceRepository : BaseRepository<Product>, IInvoiceRepository 
+public class InvoiceRepository : BaseRepository<Invoice>, IInvoiceRepository 
 {
     public InvoiceRepository(UnitOfWork unitOfWork) : base(unitOfWork)
     {

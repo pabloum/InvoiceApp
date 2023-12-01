@@ -5,7 +5,11 @@ namespace InvoiceApp.Persistence;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly SqlConnection _connection;
-    private SqlTransaction _transaction;
+    private readonly SqlTransaction _transaction;
+    private IProductRepository _productRepository;
+    private IOrderRepository _orderRepository;
+    private IInvoiceRepository _invoiceRepository;
+    private IClientRepository _clientRepository;
 
     public UnitOfWork(string connectionString)
     {
@@ -17,6 +21,34 @@ public class UnitOfWork : IUnitOfWork
     public SqlConnection Connection => _connection;
     public SqlTransaction Transaction => _transaction;
 
+    public IProductRepository ProductRepository 
+    {
+        get
+        {
+            return _productRepository ??= new ProductRepository(this);
+        }
+    }
+    public IOrderRepository OrderRepository 
+    {
+        get
+        {
+            return _orderRepository ??= new OrderRepository(this);
+        }
+    }
+    public IInvoiceRepository InvoiceRepository 
+    {
+        get
+        {
+            return _invoiceRepository ??= new InvoiceRepository(this);
+        }
+    }
+    public IClientRepository ClientRepository 
+    {
+        get
+        {
+            return _clientRepository ??= new ClientRepository(this);
+        }
+    }
     public void Commit()
     {
         _transaction?.Commit();

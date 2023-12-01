@@ -8,4 +8,8 @@ public interface IUnitOfWork : IDisposable
     void Rollback();
     SqlConnection Connection { get; }
     SqlTransaction Transaction { get; }
+    IProductRepository ProductRepository { get; }
+    IOrderRepository OrderRepository { get; }
+    IInvoiceRepository InvoiceRepository { get; }
+    IClientRepository ClientRepository { get; }
 }
