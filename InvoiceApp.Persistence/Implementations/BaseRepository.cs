@@ -6,12 +6,10 @@ namespace InvoiceApp.Persistence;
 public abstract class BaseRepository<T> : IRepository<T>
 {
     private readonly SqlConnection _connection;
-    private SqlTransaction _transaction;
     
-    public BaseRepository(UnitOfWork unitOfWork)
+    public BaseRepository(SqlConnection sqlConnection)
     {
-        _connection = unitOfWork.Connection;
-        _transaction = unitOfWork.Transaction;
+        _connection = sqlConnection;
     }
 
     public IEnumerable<T> GetAll()

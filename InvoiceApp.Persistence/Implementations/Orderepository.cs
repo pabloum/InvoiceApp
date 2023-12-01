@@ -1,10 +1,11 @@
 using InvoiceApp.Domain;
+using Microsoft.Data.SqlClient;
 
 namespace InvoiceApp.Persistence;
 
 public class OrderRepository : BaseRepository<Order>, IOrderRepository 
 {
-    public OrderRepository(UnitOfWork unitOfWork) : base(unitOfWork)
+    public OrderRepository(SqlConnection sqlConnection) : base(sqlConnection)
     {
     }
 }
