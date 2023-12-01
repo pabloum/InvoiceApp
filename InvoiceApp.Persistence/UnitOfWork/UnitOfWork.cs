@@ -1,5 +1,4 @@
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 
 namespace InvoiceApp.Persistence;
 
@@ -7,37 +6,53 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly SqlConnection _connection;
     private readonly SqlTransaction _transaction;
-    private IProductRepository _productRepository;
-    private IOrderRepository _orderRepository;
-    private IInvoiceRepository _invoiceRepository;
-    private IClientRepository _clientRepository;
+    private IProductRepository? _productRepository;
+    private IOrderRepository? _orderRepository;
+    private IInvoiceRepository? _invoiceRepository;
+    private IClientRepository? _clientRepository;
 
-    public UnitOfWork(SqlConnection sqlConnection
-                    , IProductRepository productRepository
-                    , IOrderRepository orderRepository
-                    , IInvoiceRepository invoiceRepository
-                    , IClientRepository clientRepository)
+    public UnitOfWork(SqlConnection sqlConnection)
     {
         _connection = sqlConnection;
         _connection.Open();
         _transaction = _connection.BeginTransaction();
-        _productRepository = productRepository;
-        _orderRepository = orderRepository;
-        _invoiceRepository = invoiceRepository;
-        _clientRepository = clientRepository;
     }
 
     public SqlConnection Connection => _connection;
 
     public SqlTransaction Transaction => _transaction;
 
-    public IProductRepository ProductRepository => _productRepository;
+    public IProductRepository ProductRepository 
+    {
+        get 
+        {
+            return _productRepository ??=  new ProductRepository(_connection);
+        }
+    } 
 
-    public IOrderRepository OrderRepository => _orderRepository;
+    public IOrderRepository OrderRepository 
+    {
+        get 
+        {
+            return _orderRepository ??=  new OrderRepository(_connection);
+        }
+    } 
 
-    public IInvoiceRepository InvoiceRepository => _invoiceRepository;
+    public IInvoiceRepository InvoiceRepository 
+    {
+        get 
+        {
+            return _invoiceRepository ??=  new InvoiceRepository(_connection);
+        }
+    } 
 
-    public IClientRepository ClientRepository => _clientRepository;
+    public IClientRepository ClientRepository 
+    {
+        get 
+        {
+            return _clientRepository ??=  new ClientRepository(_connection);
+        }
+    } 
 
     public void Commit()
     {

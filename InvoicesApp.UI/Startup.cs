@@ -20,12 +20,6 @@ public class Startup
         // services.AddScoped<IUnitOfWork>(provider => new UnitOfWork(_configuration));
         services.AddScoped(provider => new SqlConnection(_configuration.GetConnectionString("InvoiceDataBase")));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        
-        // Add Repositories to container
-        services.AddTransient<IClientRepository, ClientRepository>();
-        services.AddTransient<IProductRepository, ProductRepository>();
-        services.AddTransient<IOrderRepository, OrderRepository>();
-        services.AddTransient<IInvoiceRepository, InvoiceRepository>();
 
         // Add Services to container
         services.AddTransient<IInvoiceService, InvoiceService>();
