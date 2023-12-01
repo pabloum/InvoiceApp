@@ -2,8 +2,8 @@
 
 public interface IRepository<T>
 {
-    Task<IEnumerable<T>> GetAll();
-    Task<T?> GetById(int id);
-    Task Insert(T entity);
-    Task Delete(int id);
+    IEnumerable<T> GetAll();
+    T? GetById(int id);
+    int Insert(T entity);
+    int Delete(int id);
 }

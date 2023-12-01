@@ -6,49 +6,35 @@ namespace InvoiceApp.Persistence;
 
 public class BaseRepository<T> : IRepository<T>
 {
-    public readonly string _connectionString;
+    private readonly SqlConnection _connection;
+    private SqlTransaction _transaction;
     
-    public BaseRepository(IConfiguration configuration)
+    public BaseRepository(UnitOfWork unitOfWork)
     {
-        _connectionString = configuration.GetConnectionString("DataBase") ?? String.Empty;
+        _connection = unitOfWork.Connection;
+        _transaction = unitOfWork.Transaction;
     }
 
-    public async Task<IEnumerable<T>> GetAll()
+    public IEnumerable<T> GetAll()
     {
-        using (var connection = new SqlConnection(_connectionString)) 
-        {
-            await connection.OpenAsync();
-            var sql = $"SELECT * FROM {GetTableName()}";     
-            return connection.Query<T>(sql); 
-        }
+        var sql = $"SELECT * FROM {GetTableName()}";     
+        return _connection.Query<T>(sql); 
     }
     
-    public async Task<T?> GetById(int id)
+    public T? GetById(int id)
     {
-        using (var connection = new SqlConnection(_connectionString)) 
-        {
-            await connection.OpenAsync();
-            var sql = $"SELECT * FROM {GetTableName()} WHERE Id = @Id";                 
-            return connection.QueryFirstOrDefault<T>(sql, new { Id = id}); 
-        }
+        var sql = $"SELECT * FROM {GetTableName()} WHERE Id = @Id";                 
+        return _connection.QueryFirstOrDefault<T>(sql, new { Id = id}); 
     }
 
-    public async Task Insert(T entity)
+    public int Insert(T entity)
     {
-        using (var connection = new SqlConnection(_connectionString))
-        {
-            await connection.OpenAsync();
-            connection.Execute($"INSERT INTO {GetTableName()} VALUES (@Property1, @Property2, ...)", entity);
-        }
+        return _connection.Execute($"INSERT INTO {GetTableName()} VALUES (@Property1, @Property2, ...)", entity);
     }
 
-    public async Task Delete(int id)
+    public int Delete(int id)
     {
-        using (var connection = new SqlConnection(_connectionString))
-        {
-            await connection.OpenAsync();
-            connection.Execute($"DELETE FROM {GetTableName()} WHERE Id = @Id", new { Id = id });
-        }
+        return _connection.Execute($"DELETE FROM {GetTableName()} WHERE Id = @Id", new { Id = id });
     }
 
     private string GetTableName()
