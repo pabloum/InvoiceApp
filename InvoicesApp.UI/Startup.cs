@@ -16,13 +16,9 @@ public class Startup
     {
         services.AddControllersWithViews();
         
-        // Add SqlConnection and UnitOfWork
-        // services.AddScoped<IUnitOfWork>(provider => new UnitOfWork(_configuration));
         services.AddScoped(provider => new SqlConnection(_configuration.GetConnectionString("InvoiceDataBase")));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-        // Add Services to container
-        services.AddTransient<IInvoiceService, InvoiceService>();
+        services.AddScoped<IInvoiceService, InvoiceService>();
     }
 
     public void StartApp(WebApplication app)
