@@ -1,10 +1,9 @@
 using Dapper;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 
 namespace InvoiceApp.Persistence;
 
-public class BaseRepository<T> : IRepository<T>
+public abstract class BaseRepository<T> : IRepository<T>
 {
     private readonly SqlConnection _connection;
     private SqlTransaction _transaction;

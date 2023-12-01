@@ -7,9 +7,9 @@ public class UnitOfWork : IUnitOfWork
     private readonly SqlConnection _connection;
     private SqlTransaction _transaction;
 
-    public UnitOfWork(string connectionStrind)
+    public UnitOfWork(string connectionString)
     {
-        _connection = new SqlConnection(connectionStrind);
+        _connection = new SqlConnection(connectionString);
         _connection.Open();
         _transaction = _connection.BeginTransaction();
     }
